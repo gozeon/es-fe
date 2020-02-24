@@ -147,3 +147,49 @@ function formatReqData(data) {
   delete data.time
   return data
 }
+
+configSearch()
+function configSearch() {
+  $.ajax({
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('es_token')}`,
+    },
+    url: `${process.env.API_HOST}/project`,
+    success: function(response) {
+      if (response.statusCode === 403) {
+      }
+
+      if (response.statusCode === 200) {
+        renderSearch(response.data)
+      } else {
+      }
+    },
+    error: function(error) {
+      Swal.fire({
+        title: '网络错误',
+        text: error.message,
+        icon: 'error',
+      })
+    },
+  })
+}
+
+function renderSearch(data) {
+  var elements = $()
+  elements = elements.add(`
+    <option value="" disabled selected>请选择</option>
+  `)
+  for (let i = 0; i < data.length; i++) {
+    elements = elements.add(`
+    <option value="${data[i].id}">${data[i].name}</option>
+        `)
+  }
+  $('#projectSelect')
+    .empty()
+    .append(elements)
+
+  if (projectId) {
+    $('#projectSelect').val(projectId)
+  }
+}
