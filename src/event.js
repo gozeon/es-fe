@@ -23,7 +23,7 @@ laydate.render({
 
 $('form.newproject').submit(function(e) {
   e.preventDefault()
-  const reqData = $('form')
+  const reqData = $('form.newproject')
     .serializeArray()
     .reduce((a, x) => ({ ...a, [x.name]: x.value }), {})
 
